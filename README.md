@@ -1,7 +1,3 @@
-Absolutely! Here's a clean, professional, and attractive `README.md` for your **GenAI Smart Assistant** project, formatted and ready to copy-paste into your GitHub repository.
-
----
-
 ## 📄 GenAI Smart Assistant (Built with Gemini Flash & Streamlit)
 
 An AI-powered smart assistant that can **summarize** research documents, **answer user questions**, and **generate logic-based challenges** – all grounded in your uploaded content.
