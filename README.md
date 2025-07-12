@@ -111,7 +111,3 @@ Built with 💙 by [Anmol Singh](https://github.com/anmolecule94)
 API powered by **Google Gemini Flash**
 
 ---
-
-✅ You're now ready to share this publicly or submit it wherever required.
-
-Let me know if you want me to write a 2-minute Loom demo script or a GitHub project description!
