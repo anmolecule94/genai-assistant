@@ -1,44 +1,29 @@
-import requests
-import json
-from config import GEMINI_API_KEY, GEMINI_MODEL
+import google.generativeai as genai
 
-# Gemini endpoint using model from config
-ENDPOINT = f"https://generativelanguage.googleapis.com/v1/models/{GEMINI_MODEL}:generateContent"
+def answer_question(document_text: str, question: str, api_key: str) -> dict:
+    """
+    Use Gemini 1.5 Pro to answer a question and provide justification.
+    """
+    genai.configure(api_key=api_key)
 
-HEADERS = {
-    "Content-Type": "application/json",
-    "x-goog-api-key": GEMINI_API_KEY
-}
+    try:
+        model = genai.GenerativeModel(model_name="models/gemini-1.5-flash-latest")
 
-def answer_question(text, question):
-    prompt = f"""
-You are a smart assistant helping to extract answers from a document that may contain unstructured or semi-structured information such as tables, mark sheets, or paragraph descriptions.
 
-Document:
-{text}
+        prompt = (
+            f"You are a helpful assistant. Use ONLY the content in the following document.\n\n"
+            f"DOCUMENT:\n{document_text[:12000]}\n\n"
+            f"QUESTION:\n{question}\n\n"
+            "Answer the question, then add a 'Justification:' section quoting the supporting line."
+        )
 
-User Question:
-{question}
+        response = model.generate_content(prompt)
+        content = response.text.strip()
 
-Instructions:
-- Carefully look for tabular or list-like patterns in the document.
-- If the document includes semester results or subject marks, extract subject names and corresponding marks.
-- Answer directly and accurately. Be brief and only include what's asked.
-- If the document doesn’t contain relevant data, respond with: "The document does not include this information."
+        if "Justification:" in content:
+            answer, justification = content.split("Justification:", 1)
+            return {"answer": answer.strip(), "justification": justification.strip()}
 
-Answer:"""
-
-    data = {
-        "contents": [
-            {
-                "parts": [{"text": prompt}]
-            }
-        ]
-    }
-
-    response = requests.post(ENDPOINT, headers=HEADERS, data=json.dumps(data))
-
-    if response.status_code == 200:
-        return response.json()['candidates'][0]['content']['parts'][0]['text'].strip()
-    else:
-        return f"❌ Gemini API Error: {response.status_code} - {response.text}"
+        return {"answer": content, "justification": ""}
+    except Exception as e:
+        raise RuntimeError(f"Gemini Q&A error: {e}")

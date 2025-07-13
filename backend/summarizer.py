@@ -1,31 +1,17 @@
-import requests
-import json
-from config import GEMINI_API_KEY, GEMINI_MODEL
+import google.generativeai as genai
 
-# ✅ Use correct v1 endpoint
-ENDPOINT = f"https://generativelanguage.googleapis.com/v1/models/{GEMINI_MODEL}:generateContent"
+def summarise_document(text: str, api_key: str) -> str:
+    """
+    Generate a ≤150-word summary using Gemini 1.5 Pro (latest).
+    """
+    genai.configure(api_key=api_key)
 
-HEADERS = {
-    "Content-Type": "application/json",
-    "x-goog-api-key": GEMINI_API_KEY
-}
+    try:
+        model = genai.GenerativeModel(model_name="models/gemini-1.5-flash-latest")
 
-def summarize_text(text):
-    prompt = f"Summarize the following document in under 150 words:\n\n{text}"
-
-    data = {
-        "contents": [
-            {
-                "parts": [
-                    {"text": prompt}
-                ]
-            }
-        ]
-    }
-
-    response = requests.post(ENDPOINT, headers=HEADERS, data=json.dumps(data))
-
-    if response.status_code == 200:
-        return response.json()['candidates'][0]['content']['parts'][0]['text'].strip()
-    else:
-        return f"❌ Gemini API Error: {response.status_code} - {response.text}"
+        response = model.generate_content(
+            f"Summarize the following document in no more than 150 words:\n\n{text[:12000]}"
+        )
+        return response.text.strip()
+    except Exception as e:
+        raise RuntimeError(f"Gemini summarization error: {e}")
