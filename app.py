@@ -23,7 +23,7 @@ from backend.challenge import (
 
 # ───── Streamlit UI Setup ─────
 st.set_page_config("GEN AI Assistant", "🧠", layout="wide")
-st.title("🧠 Smart Assistant for Research Summarization")
+st.title("GEN AI Assistant")
 
 uploaded_file = st.file_uploader("📂 Upload a PDF or TXT file", type=["pdf", "txt"])
 
