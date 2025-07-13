@@ -10,7 +10,7 @@ A Streamlit-powered application using Google Gemini AI for:
 
 ## 🌐 Live Demo
 
-https://ayushsmartassistant.streamlit.app
+https://genai-assistant-by-anmol.streamlit.app
 
 ## 🚀 Features
 
@@ -26,7 +26,7 @@ https://ayushsmartassistant.streamlit.app
 ## 📁 Folder Structure
 
 ```
-smart-assistant/
+genai-assistant/
 ├── app.py
 ├── .env
 ├── requirements.txt
@@ -43,8 +43,8 @@ smart-assistant/
 
 1. **Clone this repo**
 ```bash
-git clone https://github.com/ayush9634/smart-assistant.git
-cd smart-assistant
+git clone https://github.com/anmolecule94/genai-assistant
+cd genai-assistant
 ```
 
 2. **Create a virtual environment**
